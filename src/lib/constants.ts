@@ -1,6 +1,6 @@
 export const PROJECT_DATA = [
   {
-    id: crypto.randomUUID(),
+    id: 1,
     title: "DevReviews",
     url: "https://app-quiz-eta.vercel.app/",
     headline: "A platform for displaying projects!",
@@ -12,7 +12,7 @@ export const PROJECT_DATA = [
     dateCreated: "11/2/24",
   },
   {
-    id: crypto.randomUUID(),
+    id: 2,
     title: "AwesomeApp",
     url: "https://awesomeapp.com/",
     headline: "An amazing app for productivity!",
@@ -24,7 +24,7 @@ export const PROJECT_DATA = [
     dateCreated: "10/25/24",
   },
   {
-    id: crypto.randomUUID(),
+    id: 3,
     title: "CodeHub",
     url: "https://codehub.io/",
     headline: "Your one-stop destination for coding resources!",
@@ -36,7 +36,7 @@ export const PROJECT_DATA = [
     dateCreated: "11/10/24",
   },
   {
-    id: crypto.randomUUID(),
+    id: 4,
     title: "Amazing Website",
     url: "https://example.com/",
     headline: "A website that will blow your mind!",
