@@ -1,7 +1,13 @@
 "use client";
 import { PROJECT_DATA } from "@/lib/constants";
 import { Project } from "@/types";
-import { Pencil1Icon } from "@radix-ui/react-icons";
+import {
+  BarChartIcon,
+  ChatBubbleIcon,
+  EyeOpenIcon,
+  HeartFilledIcon,
+  Pencil1Icon,
+} from "@radix-ui/react-icons";
 import { redirect } from "next/navigation";
 import * as Switch from "@radix-ui/react-switch";
 
@@ -10,7 +16,6 @@ export default async function ProjectSettings({
 }: {
   params: { id: string };
 }) {
-  console.log(params.id);
   const project = await PROJECT_DATA.find(
     (project) => project.id === +params.id
   );
@@ -74,9 +79,6 @@ function ProjectSettingsControls() {
           You can change who has permissions to see your project
         </p>
         <ProjectVisibilityToggle />
-        {/* <button className=" h-8 w-full rounded bg-gray-300 text-gray-600 text-sm">
-          Public/Private
-        </button> */}
       </div>
       <div className="bg-white shadow rounded p-2">
         <h4 className="text-gray-600 text-base leading-5 mb-1">
@@ -133,22 +135,42 @@ function ProjectReviews() {}
 
 function ProjectAnalytics() {
   return (
-    <div className="grid grid-cols-2 gap-2">
-      <div className="bg-gray-200 rounded p-2">
-        20
-        <p className="text-lg">Views</p>
+    <div className="space-y-4">
+      <div className="p-4 bg-white rounded flex items-center gap-4">
+        <div className="grid place-content-center size-8 bg-gray-400 rounded-full shrink-0">
+          <EyeOpenIcon className="text-gray-300 size-4" />
+        </div>
+        <div className="space-y-1 text-gray-700">
+          <p className="text-3xl leading-5 font-bold">22</p>
+          <p className="text-sm">Views</p>
+        </div>
       </div>
-      <div className="bg-gray-200 rounded p-1">
-        20
-        <p className="text-lg">Views</p>
+      <div className="p-4 bg-white rounded flex items-center gap-4">
+        <div className="grid place-content-center size-8 bg-gray-400 rounded-full shrink-0">
+          <EyeOpenIcon className="text-gray-300 size-4" />
+        </div>
+        <div className="space-y-1 text-gray-700">
+          <p className="text-3xl leading-5 font-bold">100</p>
+          <p className="text-sm">Likes</p>
+        </div>
       </div>
-      <div className="bg-gray-200 rounded p-1">
-        20
-        <p className="text-lg">Views</p>
+      <div className="p-4 bg-white rounded flex items-center gap-4">
+        <div className="grid place-content-center size-8 bg-gray-400 rounded-full shrink-0">
+          <ChatBubbleIcon className="text-gray-300 size-4" />
+        </div>
+        <div className="space-y-1 text-gray-700">
+          <p className="text-3xl leading-5 font-bold">22</p>
+          <p className="text-sm">Comments</p>
+        </div>
       </div>
-      <div className="bg-gray-200 rounded p-1">
-        20
-        <p className="text-lg">Views</p>
+      <div className="p-4 bg-white rounded flex items-center gap-4">
+        <div className="grid place-content-center size-8 bg-gray-400 rounded-full shrink-0">
+          <BarChartIcon className="text-gray-300 size-4" />
+        </div>
+        <div className="space-y-1 text-gray-700">
+          <p className="text-3xl leading-5 font-bold">22</p>
+          <p className="text-sm">Rating</p>
+        </div>
       </div>
     </div>
   );
