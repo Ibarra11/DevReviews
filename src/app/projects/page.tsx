@@ -34,7 +34,7 @@ export default function Projects({
     <>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <h2 className="text-4xl text-gray-800 font-bold">Projects</h2>
+          <h2 className="text-3xl text-gray-800 font-bold">Projects</h2>
           {query && (
             <div className="relative top-[2px] flex items-center gap-2">
               <DoubleArrowRightIcon className="size-5 text-gray-500" />
@@ -42,7 +42,6 @@ export default function Projects({
             </div>
           )}
         </div>
-
         <SearchBar query={query} />
       </div>
       <div className="flex-1 mt-12 mb-2 py-2  overflow-y-auto">
