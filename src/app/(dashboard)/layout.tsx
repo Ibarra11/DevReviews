@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
-import "./globals.css";
-import { cn } from "@/lib/utils";
+import "../globals.css";
+import SideBarNav from "@/components/SideBarNav";
 
 const raleway = Raleway({ subsets: ["latin"] });
 
@@ -17,15 +17,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen antialiased bg-gray-100",
-          raleway.className
-        )}
-      >
-        {children}
-      </body>
-    </html>
+    <div>
+      <aside className="fixed top-0 bottom-0 w-[280px]">
+        <SideBarNav />
+      </aside>
+      <main className="ml-[280px] min-h-screen overflow-y-auto">
+        <div className="py-12 px-6 max-w-[1440px] mx-auto w-full">
+          {children}
+        </div>
+      </main>
+    </div>
   );
 }

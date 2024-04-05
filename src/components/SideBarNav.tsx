@@ -1,6 +1,8 @@
 import Link from "next/link";
 import UserProfile from "./UserProfile";
 import * as Icons from "@radix-ui/react-icons";
+import { logout } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 type Icon = keyof typeof Icons;
 
@@ -36,9 +38,18 @@ export default function SideBarNav() {
           ))}
         </ul>
       </nav>
-      <button className="mt-auto bg-gray-600 h-12 text-base font-semibold text-gray-100 rounded">
-        Logout
-      </button>
+      <form
+        className="mt-auto"
+        action={async () => {
+          "use server";
+          await logout();
+          revalidatePath("/");
+        }}
+      >
+        <button className="w-full bg-gray-600 h-12 text-base font-semibold text-gray-100 rounded">
+          Logout
+        </button>
+      </form>
       <div className="bg-gray-200 h-px my-12"></div>
       <UserProfile />
     </div>
