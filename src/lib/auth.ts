@@ -34,7 +34,7 @@ export async function createSession(payload: {
   return true;
 }
 
-export async function deleteSession() {
+export async function clearSession() {
   // Destroy the session
   cookies().set("session", "", { expires: new Date(0) });
 }

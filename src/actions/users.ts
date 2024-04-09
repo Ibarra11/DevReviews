@@ -2,7 +2,7 @@
 import { createSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { findUser } from "@/services/users";
-import bcrypt from "bcrypt";
+import bcrypt, { compare } from "bcrypt";
 import { z } from "zod";
 
 type IdleState = {
@@ -23,8 +23,10 @@ type FormState = SuccessState | ErrorState | IdleState;
 const registerSchema = z.object({
   username: z.string().min(5, "Username must be at least 5 characters long"),
   email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(12, "Password must be atleast 5 characters long"),
+  password: z.string().min(12, "Password must be atleast 12 characters long"),
 });
+
+const loginSchema = registerSchema.omit({ username: true });
 
 export async function getAllUsers() {
   const users = await db({ query: "SELECT * FROM USER" });
@@ -32,9 +34,35 @@ export async function getAllUsers() {
   return users;
 }
 
-export async function loginUser(formData: FormData) {
-  const { email, password } = Object.fromEntries(formData);
-  const user = await findUser(email as string);
+export async function loginUser(
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
+  const rawFormData = Object.fromEntries(formData);
+  console.log(rawFormData);
+  const validatedFormData = loginSchema.safeParse(rawFormData);
+  if (validatedFormData.success) {
+    const { email, password } = validatedFormData.data;
+    const [user] = (await db({
+      query: `SELECT * FROM User WHERE email=?`,
+      values: [email],
+    })) as any;
+    if (!user) {
+      const fieldErrors: ErrorState["fieldErrors"] = {};
+      fieldErrors.email = ["Invalid email or password"];
+      return { status: "error", fieldErrors };
+    }
+    const match = await compare(password, user.password);
+    if (!match) {
+      const fieldErrors: ErrorState["fieldErrors"] = {};
+      fieldErrors.email = ["Invalid email or password"];
+      return { status: "error", fieldErrors };
+    }
+    createSession({ userId: user.id, email, username: user.username });
+    return { status: "success" };
+  }
+
+  return { status: "success" };
 }
 
 export async function registerUser(

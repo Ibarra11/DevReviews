@@ -1,7 +1,7 @@
 import Link from "next/link";
 import UserProfile from "./UserProfile";
 import * as Icons from "@radix-ui/react-icons";
-import { logout } from "@/lib/auth";
+import { clearSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
 type Icon = keyof typeof Icons;
@@ -42,7 +42,7 @@ export default function SideBarNav() {
         className="mt-auto"
         action={async () => {
           "use server";
-          await logout();
+          clearSession();
           revalidatePath("/");
         }}
       >

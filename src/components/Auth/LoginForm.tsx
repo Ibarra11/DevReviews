@@ -1,26 +1,30 @@
 "use client";
-
-import { redirect } from "next/navigation";
-import React, { useRef } from "react";
+import React from "react";
 import AuthInput from "./AuthInput";
 import AuthPassword from "./AuthPassword";
 import AuthButton from "./AuthButton";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useFormState } from "react-dom";
+import { loginUser } from "@/actions/users";
 
-export default function LoginForm({ login }: { login: any }) {
-  const ref = useRef<HTMLFormElement>(null);
+export default function LoginForm() {
+  const [formState, formAction] = useFormState(loginUser, {
+    status: "idle",
+  });
+  const router = useRouter();
+  const formRef = React.useRef<HTMLFormElement>(null);
+
+  React.useEffect(() => {
+    if (formState.status === "success") {
+      if (formRef.current) {
+        formRef.current.reset();
+        router.push("/");
+      }
+    }
+  }, [formState]);
   return (
-    <form
-      ref={ref}
-      action={async (formData) => {
-        const res = await login(formData);
-        if (res) {
-          ref.current?.reset();
-          redirect("/");
-        }
-      }}
-      className="w-full"
-    >
+    <form ref={formRef} action={formAction} className="w-full">
       <div className="text-gray-700 space-y-1 text-center mb-8">
         <p className="text-lg font-bold">Welcome back</p>
         <p className="text-sm">Please enter your details.</p>
@@ -31,8 +35,14 @@ export default function LoginForm({ login }: { login: any }) {
           name="email"
           icon="EnvelopeClosedIcon"
           label="Email"
+          error={undefined}
         />
-        <AuthPassword name="password" icon="LockClosedIcon" label="Password" />
+        <AuthPassword
+          name="password"
+          icon="LockClosedIcon"
+          label="Password"
+          error={undefined}
+        />
       </div>
       <div className="max-w-xs mx-auto mb-4">
         <AuthButton>Login</AuthButton>
