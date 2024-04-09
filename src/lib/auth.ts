@@ -16,16 +16,15 @@ export async function decrypt(input: string): Promise<any> {
   return payload;
 }
 
-export async function login(formData: FormData) {
-  // Verify credentials && get the user
-  const user = {
-    email: formData.get("email"),
-    password: formData.get("password"),
-  };
+export async function createSession(payload: {
+  userId: number;
+  email: string;
+  username: string;
+}) {
   // Create the session
   // Expires in 1hr
   const expires = new Date(Date.now() + 1 * 60 * 60 * 1000);
-  const session = encrypt({ ...user, expires });
+  const session = encrypt({ payload, expires });
 
   // Save the session in a cookie
   cookies().set("session", session, {
@@ -35,7 +34,7 @@ export async function login(formData: FormData) {
   return true;
 }
 
-export async function logout() {
+export async function deleteSession() {
   // Destroy the session
   cookies().set("session", "", { expires: new Date(0) });
 }

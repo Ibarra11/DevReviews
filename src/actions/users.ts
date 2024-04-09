@@ -1,4 +1,5 @@
 "use server";
+import { createSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { findUser } from "@/services/users";
 import bcrypt from "bcrypt";
@@ -65,15 +66,17 @@ export async function registerUser(
       return { status: "error", fieldErrors };
     }
 
-    // const user = await db({
-    //   query: `
-    //   INSERT INTO USER (username, email, password)
-    //   VALUES(?,?,?)
-    // `,
-    //   values: [username, email, hashedPassword],
-    // });
+    const createdUser = (await db({
+      query: `
+      INSERT INTO USER (username, email, password)
+      VALUES(?,?,?)
+    `,
+      values: [username, email, hashedPassword],
+    })) as any;
 
-    return { status: "idle" };
+    createSession({ userId: createdUser.insertId, email, username });
+
+    return { status: "success" };
   }
   return {
     status: "error",

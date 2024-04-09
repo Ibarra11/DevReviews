@@ -24,7 +24,6 @@ export default function AuthPassword({ name, label, icon, error }: Props) {
           <span className="absolute grid place-content-center h-full size-12 items-center pointer-events-none">
             <Icon className="size-4" />
           </span>
-
           <input
             name={name}
             className={cn(

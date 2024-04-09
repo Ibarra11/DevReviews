@@ -17,8 +17,6 @@ export default function RegisterForm() {
   const router = useRouter();
   const formRef = React.useRef<HTMLFormElement>(null);
 
-  console.log(formState);
-
   useEffect(() => {
     if (formState.status === "success") {
       if (formRef.current) {
