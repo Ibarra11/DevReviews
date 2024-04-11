@@ -1,8 +1,9 @@
 import Link from "next/link";
 import UserProfile from "./UserProfile";
 import * as Icons from "@radix-ui/react-icons";
-import { clearSession } from "@/lib/auth";
+import { clearSession, getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 type Icon = keyof typeof Icons;
 
@@ -24,7 +25,7 @@ const LINKS: { href: string; label: string; icon: Icon }[] = [
   },
 ];
 
-export default function SideBarNav() {
+export default async function SideBarNav() {
   return (
     <div className="flex flex-col h-full bg-gray-300  px-6 py-12">
       <h1 className="text-gray-900 font-bold text-2xl mb-8">DevReviews</h1>
