@@ -10,3 +10,25 @@ export interface Project {
   avgRating: number;
   dateCreated: string;
 }
+
+export interface CreateProject {
+  projectInfo: {
+    title: string;
+    headline: string;
+    url: string;
+    github: string;
+  };
+  projectMedia: string[];
+  projectHighlights: ProjectHighlight[];
+}
+
+export interface ProjectHighlight {
+  media: string;
+  description: string;
+  title: string;
+}
+
+export interface ProjectHighlightUpdate extends ProjectHighlight {
+  handleUpdateProjectHighlight: (highlight: ProjectHighlight) => void;
+  handleDeleteProjectHighlight: () => void;
+}
