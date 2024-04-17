@@ -1,17 +1,16 @@
 import { cn } from "@/lib/utils";
 import { Project } from "@/types";
+import moment from "moment";
 import * as Icons from "@radix-ui/react-icons";
 type Icons = keyof typeof Icons;
 
 export default function ProjectCard({
   id,
-  dateCreated,
+  date_created,
   headline,
   title,
   views,
   likes,
-  comments,
-  avgRating,
 }: Project) {
   return (
     <a
@@ -20,7 +19,9 @@ export default function ProjectCard({
     >
       <div className="absolute right-4 top-2 flex gap-2 items-center">
         <Icons.CalendarIcon className="text-gray-400 size-4" />
-        <time className="text-gray-600 text-sm">{dateCreated}</time>
+        <time className="text-gray-600 text-sm">
+          {date_created.toLocaleDateString("en-US")}
+        </time>
       </div>
       <div className="space-y-1 mt-2 mb-3">
         <h2 className="text-gray-900 font-bold text-lg leading-5">{title}</h2>
@@ -33,12 +34,12 @@ export default function ProjectCard({
           icon="HeartFilledIcon"
           stat={likes}
         />
-        <IconWithStats icon="ChatBubbleIcon" stat={comments} />
-        <IconWithStats
+        {/* <IconWithStats icon="ChatBubbleIcon" stat={comments} /> */}
+        {/* <IconWithStats
           className="justify-self-end"
           icon="BarChartIcon"
           stat={avgRating}
-        />
+        /> */}
       </div>
     </a>
   );

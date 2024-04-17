@@ -1,11 +1,15 @@
 "use client";
 
 import React, { FormEvent } from "react";
+
 import { z } from "zod";
 import ProjectMedia from "@/components/NewProject/ProjectMedia";
 import ProjectHighlights from "@/components/NewProject/ProjectHighlights";
 import { CreateProject, ProjectHighlight } from "@/types";
 import ProjectInfo from "@/components/NewProject/ProjectInfo";
+import { createProject } from "@/actions/project";
+import { getSignature } from "@/lib/cloudinary";
+import { generateCloudinaryFormData } from "@/lib/utils";
 
 const projectSchema = z.object({
   projectInfo: z.object({
@@ -69,11 +73,60 @@ export default function NewProjectPage() {
     setProjectHiglights(nextProjectHighlights);
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("projectInfo: ", projectInfo);
-    console.log("projectMedia: ", projectMedia);
-    console.log("projectHighlights: ", projectHighlights);
+    const { signature, timestamp } = await getSignature();
+
+    const projectMediaPromise = Promise.all(
+      projectMedia
+        .filter((media): media is string => Boolean(media))
+        .map(async (media) => {
+          const formData = generateCloudinaryFormData({
+            media,
+            signature,
+            timestamp,
+          });
+
+          const req = await fetch(
+            process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+          const res = await req.json();
+          return res.secure_url as string;
+        })
+    );
+
+    const projectHighlightsPromise = Promise.all(
+      projectHighlights.map(async (highlight) => {
+        const formData = generateCloudinaryFormData({
+          media: highlight.media,
+          signature,
+          timestamp,
+        });
+
+        const req = await fetch(
+          process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const res = await req.json();
+        return { ...highlight, media: res.secure_url as string };
+      })
+    );
+
+    const [uploadedProjectMedia, uploadedProjectHighlights] = await Promise.all(
+      [projectMediaPromise, projectHighlightsPromise]
+    );
+    createProject({
+      projectHighlights: uploadedProjectHighlights,
+      projectInfo,
+      projectMedia: uploadedProjectMedia,
+    });
   }
 
   return (
@@ -103,4 +156,3 @@ export default function NewProjectPage() {
     </div>
   );
 }
-

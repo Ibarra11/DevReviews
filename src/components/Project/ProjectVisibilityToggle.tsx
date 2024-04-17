@@ -1,3 +1,4 @@
+"use client";
 import * as Switch from "@radix-ui/react-switch";
 export default function ProjectVisibilityToggle() {
   return (

@@ -1,6 +1,8 @@
+import { findProject } from "@/actions/project";
 import ProjectMedia from "@/components/Project/ProjectMedia";
 import ProjectMetadata from "@/components/Project/ProjectMetadata";
 import ProjectSection from "@/components/Project/ProjectSection";
+import { getUser } from "@/lib/auth";
 import { PROJECT_DATA } from "@/lib/constants";
 import { redirect } from "next/navigation";
 export default async function ProjectSettings({
@@ -8,16 +10,21 @@ export default async function ProjectSettings({
 }: {
   params: { id: string };
 }) {
-  const project = await PROJECT_DATA.find(
-    (project) => project.id === +params.id
-  );
-
+  const user = await getUser();
+  if (!user) {
+    redirect("/auth/login");
+  }
+  const project = await findProject({
+    projectId: +params.id,
+    userId: user.userId,
+  });
+  console.log(project);
   if (!project) {
     redirect("/");
   }
   return (
     <div className=" space-y-12">
-      <div className="space-y-8">
+      {/* <div className="space-y-8">
         <ProjectMetadata title={project.title} headline={project.headline} />
         <ProjectMedia />
         <ProjectSection />
@@ -25,7 +32,7 @@ export default async function ProjectSettings({
         <ProjectSection />
         <ProjectSection />
       </div>
-      <ProjectComments />
+      <ProjectComments /> */}
     </div>
   );
 }

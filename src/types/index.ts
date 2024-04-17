@@ -6,9 +6,7 @@ export interface Project {
   github: string;
   views: number;
   likes: number;
-  comments: number;
-  avgRating: number;
-  dateCreated: string;
+  date_created: Date;
 }
 
 export interface CreateProject {
