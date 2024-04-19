@@ -4,6 +4,9 @@ import { getUser } from "@/lib/auth";
 import { CreateProject, Project } from "@/types";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
+import cloudinary from "@/lib/cloudinary";
+import { deleteImgFromCloudinary } from "./cloudinary";
 
 export async function createProject({
   projectInfo,
@@ -61,6 +64,7 @@ export async function getProjects() {
   return projects as Project[];
 }
 
+// /project/:id
 export async function findProject({
   projectId,
   userId,
@@ -89,10 +93,57 @@ export async function findProject({
   });
 
   const [media, highlights] = await Promise.all([mediaQuery, highlightsQuery]);
-  console.log(media);
-  console.log(highlights);
   project.media = media;
   project.highlights = highlights;
 
   return project;
+}
+
+export async function editProjectInfo(projectId: number, formData: FormData) {
+  console.log(projectId);
+  const { title, headline } = Object.fromEntries(formData);
+  const editProjectInfoQuery = await db({
+    query: `UPDATE Project
+            SET title=?, headline=?
+            WHERE id=?
+            `,
+    values: [title, headline, projectId],
+  });
+  console.log(editProjectInfoQuery);
+  revalidatePath("/project/settings/[slug]", "page");
+}
+
+export async function editProjectSection({
+  sectionId,
+  projectId,
+  media,
+  title,
+  description,
+}: any) {
+  const editProjectInfoQuery = await db({
+    query: `UPDATE Highlight
+            SET img=?, title=?, description=?
+            WHERE id=?
+            `,
+    values: [media, title, description, sectionId],
+  });
+  console.log(editProjectInfoQuery);
+  revalidatePath("/project/settings/[slug]", "page");
+}
+
+export async function deleteProjectSection(
+  sectionId: number,
+  img: string | null
+) {
+  const deleteProjectSectionQuery = db({
+    query: `DELETE FROM Highlight WHERE id=?`,
+    values: [sectionId],
+  });
+  await Promise.all([
+    deleteProjectSectionQuery,
+    img ? deleteImgFromCloudinary(img) : null,
+  ]);
+  // console.log(deleteProjectSection);
+
+  revalidatePath("/project/settings/[slug]", "page");
 }

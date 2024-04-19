@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent } from "react";
+import React from "react";
 
 import { z } from "zod";
 import ProjectMedia from "@/components/NewProject/ProjectMedia";
@@ -122,6 +122,7 @@ export default function NewProjectPage() {
     const [uploadedProjectMedia, uploadedProjectHighlights] = await Promise.all(
       [projectMediaPromise, projectHighlightsPromise]
     );
+
     createProject({
       projectHighlights: uploadedProjectHighlights,
       projectInfo,

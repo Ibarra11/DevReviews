@@ -22,9 +22,7 @@ export default function RootLayout({
         <SideBarNav />
       </aside>
       <main className="ml-[280px] min-h-screen overflow-y-auto">
-        <div className="py-12 px-6 max-w-[1440px] mx-auto w-full">
-          {children}
-        </div>
+        <div className="py-12 px-6  max-w-7xl mx-auto w-full">{children}</div>
       </main>
     </div>
   );

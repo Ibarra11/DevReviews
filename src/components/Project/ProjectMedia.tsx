@@ -1,4 +1,6 @@
-import ProjectEditButton from "./ProjectEditButton";
+"use client";
+import React from "react";
+import ProjectEditModal from "./ProjectEditModal";
 
 export default function ProjectMedia({
   edit,
@@ -7,25 +9,22 @@ export default function ProjectMedia({
   edit?: boolean;
   media: any;
 }) {
+  const [activeMediaId, setActiveMediaId] = React.useState(media[0].id);
+  const selectedImg = media.find((m) => m.id === activeMediaId);
+  const nonSelectedImages = media.filter((m) => m.id !== activeMediaId);
   return (
     <div className="relative bg-white shadow rounded px-4 pt-12 pb-8 space-y-6">
       <h3 className="text-xl font-semibold ">Media</h3>
-      <img className="h-[400px] rounded object-cover" src={media[0].src} />
-      {/* <div className="bg-gray-300 h-[400px] rounded"></div> */}
-      <div className="flex justify-center gap-2">
-        {media.slice(1).map(({ id, src }) => (
-          <img
-            className="size-[100px] w-full object-cover"
-            key={id}
-            src={src}
-          />
+      <img
+        className="h-[400px] w-full rounded object-cover"
+        src={selectedImg}
+      />
+      <div className="flex  justify-center gap-4">
+        {nonSelectedImages.map(({ id, src }) => (
+          <img className="size-24 object-cover" key={id} src={src} />
         ))}
-        {/* <div className=" w-16 aspect-square bg-gray-500 rounded"></div>
-        <div className=" w-16 aspect-square bg-gray-500 rounded"></div>
-        <div className=" w-16 aspect-square bg-gray-500 rounded"></div>
-        <div className=" w-16 aspect-square bg-gray-500 rounded"></div> */}
       </div>
-      {edit && <ProjectEditButton />}
+      {edit && <ProjectEditModal />}
     </div>
   );
 }

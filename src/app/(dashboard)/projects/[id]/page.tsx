@@ -1,6 +1,6 @@
 import { findProject } from "@/actions/project";
 import ProjectMedia from "@/components/Project/ProjectMedia";
-import ProjectMetadata from "@/components/Project/ProjectMetadata";
+import ProjectMetadata from "@/components/Project/ProjectInfo";
 import ProjectSection from "@/components/Project/ProjectSection";
 import { getUser } from "@/lib/auth";
 import { PROJECT_DATA } from "@/lib/constants";

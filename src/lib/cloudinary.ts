@@ -1,16 +1,9 @@
-"use server";
 import "server-only";
 import { v2 as cloudinary } from "cloudinary";
 
-export async function getSignature() {
-  const timestamp = Math.round(new Date().getTime() / 1000);
-  const signature = cloudinary.utils.api_sign_request(
-    {
-      timestamp: timestamp,
-      folder: "DevReviews",
-    },
-    process.env.CLOUDINARY_API_SECRET as string
-  );
-
-  return { timestamp, signature };
-}
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY as string,
+  api_secret: process.env.CLOUDINARY_API_SECRET as string,
+});
+export default cloudinary;

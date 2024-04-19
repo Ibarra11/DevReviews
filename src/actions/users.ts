@@ -39,7 +39,6 @@ export async function loginUser(
   formData: FormData
 ): Promise<FormState> {
   const rawFormData = Object.fromEntries(formData);
-  console.log(rawFormData);
   const validatedFormData = loginSchema.safeParse(rawFormData);
   if (validatedFormData.success) {
     const { email, password } = validatedFormData.data;
