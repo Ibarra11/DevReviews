@@ -5,7 +5,6 @@ import { CreateProject, Project } from "@/types";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import cloudinary from "@/lib/cloudinary";
 import { deleteImgFromCloudinary } from "./cloudinary";
 
 export async function createProject({
@@ -145,5 +144,23 @@ export async function deleteProjectSection(
   ]);
   // console.log(deleteProjectSection);
 
+  revalidatePath("/project/settings/[slug]", "page");
+}
+
+export async function createProjectHighlight(
+  projectId: number,
+  userId: number,
+  media: string,
+  title: string,
+  description: string
+) {
+  const createProjectHighlightQuery = await db({
+    query: `
+      INSERT INTO Highlight (title, description, img, project_id, user_id)
+      VALUES(?,?,?,?,?)
+    `,
+    values: [title, description, media, projectId, userId],
+  });
+  console.log(createProjectHighlightQuery);
   revalidatePath("/project/settings/[slug]", "page");
 }

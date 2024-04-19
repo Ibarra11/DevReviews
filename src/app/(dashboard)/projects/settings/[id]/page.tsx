@@ -7,6 +7,7 @@ import { getUser } from "@/lib/auth";
 
 import { redirect } from "next/navigation";
 import ProjectInfo from "@/components/Project/ProjectInfo";
+import ProjectHighlightsContainer from "@/components/ProjectHighlightsContainer";
 
 export default async function ProjectSettings({
   params,
@@ -35,16 +36,19 @@ export default async function ProjectSettings({
           headline={project.headline}
         />
         {/* <ProjectMedia media={project.media} edit={true} /> */}
-        {project.highlights.map((highlight) => (
-          <ProjectSection
-            projectId={project.id}
-            id={highlight.id}
-            title={highlight.title}
-            description={highlight.description}
-            img={highlight.img}
-            edit={true}
-          />
-        ))}
+
+        <ProjectHighlightsContainer projectId={project.id} userId={user.userId}>
+          {project.highlights.map((highlight) => (
+            <ProjectSection
+              projectId={project.id}
+              id={highlight.id}
+              title={highlight.title}
+              description={highlight.description}
+              img={highlight.img}
+              edit={true}
+            />
+          ))}
+        </ProjectHighlightsContainer>
       </div>
       <div className="space-y-8">
         <ProjectSettingsControls />
