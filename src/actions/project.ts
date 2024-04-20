@@ -126,7 +126,6 @@ export async function editProjectSection({
             `,
     values: [media, title, description, sectionId],
   });
-  console.log(editProjectInfoQuery);
   revalidatePath("/project/settings/[slug]", "page");
 }
 
@@ -162,5 +161,27 @@ export async function createProjectHighlight(
     values: [title, description, media, projectId, userId],
   });
   console.log(createProjectHighlightQuery);
+  revalidatePath("/project/settings/[slug]", "page");
+}
+
+export async function deleteProject(projectId: number, userId: number) {
+  const project = await findProject({ projectId, userId });
+  if (!project) {
+    return false;
+  }
+  const imagesToDeleteFromCloudinary = [
+    ...project.media.map((media) => media.src),
+    ...project.highlights.map((highlight) => highlight.img),
+  ];
+
+  const deleteProjectQuery = db({
+    query: `DELETE FROM Project WHERE id=?`,
+    values: [projectId],
+  });
+
+  const [result, ...cloudinaryPromises] = await Promise.all([
+    deleteProjectQuery,
+    ...imagesToDeleteFromCloudinary.map((img) => deleteImgFromCloudinary(img)),
+  ]);
   revalidatePath("/project/settings/[slug]", "page");
 }

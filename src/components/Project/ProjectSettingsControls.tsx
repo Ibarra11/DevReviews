@@ -1,6 +1,13 @@
+import ProjectDelete from "./ProjectDelete";
 import ProjectVisibilityToggle from "./ProjectVisibilityToggle";
 
-export default function ProjectSettingsControls() {
+export default function ProjectSettingsControls({
+  projectId,
+  userId,
+}: {
+  projectId: number;
+  userId: number;
+}) {
   return (
     <div className="space-y-4">
       <div className="bg-white shadow rounded p-2">
@@ -10,17 +17,7 @@ export default function ProjectSettingsControls() {
         </p>
         <ProjectVisibilityToggle />
       </div>
-      <div className="bg-white shadow rounded p-2">
-        <h4 className="text-gray-600 text-base leading-5 mb-1">
-          Delete Project
-        </h4>
-        <p className="text-gray-500 text-sm mb-3">
-          Once you delete your project, it can't be undone!
-        </p>
-        <button className=" h-8 w-full rounded bg-red-300 text-white text-sm">
-          Delete
-        </button>
-      </div>
+      <ProjectDelete userId={userId} projectId={projectId} />
     </div>
   );
 }

@@ -24,7 +24,7 @@ export default async function ProjectSettings({
   });
   // console.log(project);
   if (!project) {
-    redirect("/");
+    redirect("/projects");
   }
   return (
     <div className="grid gap-8 grid-cols-[1fr_240px] items-start">
@@ -51,7 +51,7 @@ export default async function ProjectSettings({
         </ProjectHighlightsContainer>
       </div>
       <div className="space-y-8">
-        <ProjectSettingsControls />
+        <ProjectSettingsControls userId={user.userId} projectId={project.id} />
         <ProjectAnalytics />
       </div>
     </div>

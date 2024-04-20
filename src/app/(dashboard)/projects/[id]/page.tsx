@@ -14,6 +14,7 @@ export default async function ProjectSettings({
   if (!user) {
     redirect("/auth/login");
   }
+
   const project = await findProject({
     projectId: +params.id,
     userId: user.userId,

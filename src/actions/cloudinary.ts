@@ -19,5 +19,4 @@ export async function getSignature() {
 export async function deleteImgFromCloudinary(img: string) {
   const publicId = img.split("/").at(-1)?.split(".")[0];
   await cloudinary.uploader.destroy(`DevReviews/${publicId}`);
-  revalidatePath("/project/settings/[slug]", "page");
 }

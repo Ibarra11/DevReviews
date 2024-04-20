@@ -8,8 +8,8 @@ import ProjectHighlights from "@/components/NewProject/ProjectHighlights";
 import { CreateProject, ProjectHighlight } from "@/types";
 import ProjectInfo from "@/components/NewProject/ProjectInfo";
 import { createProject } from "@/actions/project";
-import { getSignature } from "@/lib/cloudinary";
 import { generateCloudinaryFormData } from "@/lib/utils";
+import { getSignature } from "@/actions/cloudinary";
 
 const projectSchema = z.object({
   projectInfo: z.object({
