@@ -22,7 +22,6 @@ export default async function ProjectSettings({
     projectId: +params.id,
     userId: user.userId,
   });
-  // console.log(project);
   if (!project) {
     redirect("/projects");
   }

@@ -14,5 +14,6 @@ export async function createComment(
             VALUES (?,?,?)`,
     values: [userId, projectId, content],
   });
-  revalidatePath(`/projects/${projectId}`);
+  console.log(res);
+  revalidatePath("/project/[slug]", "page");
 }

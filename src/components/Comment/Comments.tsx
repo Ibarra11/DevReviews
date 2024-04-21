@@ -16,7 +16,7 @@ export default function Comments({
         <p className="text-gray-600 text-lg">({comments.length})</p>
       </div>
       <div className="flex items-start gap-8 text-gray-700">
-        <CommentList comments={comments} />
+        <CommentList userId={userId} comments={comments} />
         <CommentForm
           commentCount={comments.length}
           projectId={projectId}

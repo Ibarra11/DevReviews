@@ -17,7 +17,6 @@ export default async function Projects({
   };
 }) {
   const projects = await getProjects();
-  console.log(projects);
   const query = searchParams?.query ?? "";
   // const page = searchParams?.page
   //   ? !Number.isNaN(Number(searchParams.page))

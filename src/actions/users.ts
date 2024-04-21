@@ -30,7 +30,6 @@ const loginSchema = registerSchema.omit({ username: true });
 
 export async function getAllUsers() {
   const users = await db({ query: "SELECT * FROM USER" });
-  console.log(users);
   return users;
 }
 

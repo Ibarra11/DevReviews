@@ -100,7 +100,6 @@ export async function findProject({
     highlightsQuery,
     commentsQuery,
   ]);
-  console.log(comments);
   const commentsWithUserInfo = await Promise.all(
     comments.map(async (comment) => {
       const [user] = await db({
@@ -160,8 +159,6 @@ export async function deleteProjectSection(
     deleteProjectSectionQuery,
     img ? deleteImgFromCloudinary(img) : null,
   ]);
-  // console.log(deleteProjectSection);
-
   revalidatePath("/project/settings/[slug]", "page");
 }
 

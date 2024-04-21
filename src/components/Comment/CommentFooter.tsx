@@ -1,15 +1,14 @@
-import { HeartIcon } from "@radix-ui/react-icons";
+import LikeButton from "./LikeButton";
 interface Props {
+  userId: number;
+  commentId: number;
   likes: number;
   liked: boolean;
 }
-export default function CommentFooter({ likes = 5 }: Props) {
+export default function CommentFooter({ likes = 5, userId, commentId }: Props) {
   return (
     <div className="flex items-center gap-2">
-      <button type="button">
-        <HeartIcon className="size-4 text-gray-500 stroke-2" />
-        <span className="sr-only">Like comment</span>
-      </button>
+      <LikeButton userId={userId} commentId={commentId} />
       <div className="flex gap-1 items-center text-gray-600 font-medium">
         <span className="inline-block -translate-y-[1px] text-sm align-to leading-3">
           {likes}
