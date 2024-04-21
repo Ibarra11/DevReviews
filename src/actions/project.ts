@@ -63,7 +63,6 @@ export async function getProjects() {
   return projects as Project[];
 }
 
-// /project/:id
 export async function findProject({
   projectId,
   userId,
@@ -90,16 +89,35 @@ export async function findProject({
       "SELECT id, title, description, img FROM Highlight WHERE project_id=?",
     values: [projectId],
   });
+  const commentsQuery = db({
+    query: "SELECT * FROM Comments WHERE project_id=?",
+    values: [projectId],
+  });
 
-  const [media, highlights] = await Promise.all([mediaQuery, highlightsQuery]);
+  const [media, highlights, comments] = await Promise.all([
+    mediaQuery,
+    highlightsQuery,
+    commentsQuery,
+  ]);
+  const commentsWithUserInfo = await Promise.all(
+    comments.map(async (comment) => {
+      const [user] = await db({
+        query: "SELECT username, email FROM User WHERE id=?",
+        values: [comment.user_id],
+      });
+      const { username, email } = user;
+      return { ...comment, username, email };
+    })
+  );
+
   project.media = media;
   project.highlights = highlights;
-
+  project.comments = commentsWithUserInfo;
   return project;
 }
 
 export async function editProjectInfo(projectId: number, formData: FormData) {
-  console.log(projectId);
+  ``;
   const { title, headline } = Object.fromEntries(formData);
   const editProjectInfoQuery = await db({
     query: `UPDATE Project
@@ -108,7 +126,6 @@ export async function editProjectInfo(projectId: number, formData: FormData) {
             `,
     values: [title, headline, projectId],
   });
-  console.log(editProjectInfoQuery);
   revalidatePath("/project/settings/[slug]", "page");
 }
 
@@ -143,45 +160,5 @@ export async function deleteProjectSection(
   ]);
   // console.log(deleteProjectSection);
 
-  revalidatePath("/project/settings/[slug]", "page");
-}
-
-export async function createProjectHighlight(
-  projectId: number,
-  userId: number,
-  media: string,
-  title: string,
-  description: string
-) {
-  const createProjectHighlightQuery = await db({
-    query: `
-      INSERT INTO Highlight (title, description, img, project_id, user_id)
-      VALUES(?,?,?,?,?)
-    `,
-    values: [title, description, media, projectId, userId],
-  });
-  console.log(createProjectHighlightQuery);
-  revalidatePath("/project/settings/[slug]", "page");
-}
-
-export async function deleteProject(projectId: number, userId: number) {
-  const project = await findProject({ projectId, userId });
-  if (!project) {
-    return false;
-  }
-  const imagesToDeleteFromCloudinary = [
-    ...project.media.map((media) => media.src),
-    ...project.highlights.map((highlight) => highlight.img),
-  ];
-
-  const deleteProjectQuery = db({
-    query: `DELETE FROM Project WHERE id=?`,
-    values: [projectId],
-  });
-
-  const [result, ...cloudinaryPromises] = await Promise.all([
-    deleteProjectQuery,
-    ...imagesToDeleteFromCloudinary.map((img) => deleteImgFromCloudinary(img)),
-  ]);
   revalidatePath("/project/settings/[slug]", "page");
 }
