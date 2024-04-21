@@ -4,7 +4,7 @@ import ProjectMetadata from "@/components/Project/ProjectInfo";
 import ProjectSection from "@/components/Project/ProjectSection";
 import { getUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import Comments from "@/components/Comments";
+import Comments from "@/components/Comment/Comments";
 
 // RSC: React Server Components
 export default async function ProjectSettings({

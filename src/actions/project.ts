@@ -90,7 +90,8 @@ export async function findProject({
     values: [projectId],
   });
   const commentsQuery = db({
-    query: "SELECT * FROM Comments WHERE project_id=?",
+    query:
+      "SELECT * FROM Comments WHERE project_id=? ORDER BY created_at DESC;",
     values: [projectId],
   });
 
@@ -99,6 +100,7 @@ export async function findProject({
     highlightsQuery,
     commentsQuery,
   ]);
+  console.log(comments);
   const commentsWithUserInfo = await Promise.all(
     comments.map(async (comment) => {
       const [user] = await db({

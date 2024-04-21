@@ -6,10 +6,12 @@ import { FormEvent } from "react";
 export default function CommentForm({
   projectId,
   userId,
+  commentCount,
   children,
 }: React.PropsWithChildren<{
   projectId: number;
   userId: number;
+  commentCount: number;
 }>) {
   async function handleCreateComment(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,19 +20,20 @@ export default function CommentForm({
     e.target.reset();
   }
   return (
-    <div className="space-y-6 w-[500px]">
-      <form onSubmit={handleCreateComment}>
-        <h3 className="text-xl font-semibold">Discussion (20)</h3>
+    <div className="space-y-6 flex-1 bg-white rounded-lg p-6">
+      <form className="space-y-4" onSubmit={handleCreateComment}>
+        <h3 className="text-xl font-semibold">Leave A Comment</h3>
         <textarea
           aria-label="comment"
           rows={6}
           name="content"
-          className="p-2.5 w-full text-sm text-gray-700 bg-gray-200 rounded-lg border-gray-300"
+          className="p-2.5 w-full text-sm text-gray-700 bg-gray-100 rounded-lg border-gray-300"
           placeholder="Write your thoughts here..."
         ></textarea>
-        <button>Post Comment</button>
+        <button className="px-3 h-10 font-medium text-base rounded bg-pink-500 text-white">
+          Post comment
+        </button>
       </form>
-      <div className="space-y-4">{children}</div>
     </div>
   );
 }

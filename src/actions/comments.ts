@@ -11,7 +11,7 @@ export async function createComment(
   const content = formData.get("content");
   const res = await db({
     query: `INSERT INTO Comments (user_id, project_id, content)
-                VALUES (?,?,?)`,
+            VALUES (?,?,?)`,
     values: [userId, projectId, content],
   });
   revalidatePath(`/projects/${projectId}`);
