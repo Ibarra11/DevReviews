@@ -57,7 +57,7 @@ export default function ProjectSection({
           }
         );
         const res = await req.json();
-        console.log(res);
+
         newMedia = res.secure_url;
       }
     }
@@ -67,10 +67,6 @@ export default function ProjectSection({
       title,
       description,
       media: newMedia ?? media,
-    });
-
-    await new Promise((res, rej) => {
-      setTimeout(res, 1000);
     });
     setIsOpen(false);
   }

@@ -3,6 +3,7 @@ import { FormEvent } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+
 export default function SearchBar({ query }: { query: string }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();

@@ -1,7 +1,7 @@
 "use client";
-import { deleteProject } from "@/actions/project";
+import { deleteProjectSection } from "@/actions/project";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Cross2Icon, Pencil1Icon } from "@radix-ui/react-icons";
+
 import React from "react";
 export default function ProjectDelete({
   projectId,
@@ -40,7 +40,7 @@ function ProjectDeleteModal({
 }>) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await deleteProject(projectId, userId);
+    // await deleteProjectSection(projectId, userId);
     handleOpenChange(false);
   }
   return (

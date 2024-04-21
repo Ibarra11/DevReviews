@@ -5,6 +5,8 @@ import ProjectSection from "@/components/Project/ProjectSection";
 import { getUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Comments from "@/components/Comments";
+
+// RSC: React Server Components
 export default async function ProjectSettings({
   params,
 }: {

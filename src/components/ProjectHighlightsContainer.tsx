@@ -26,7 +26,6 @@ export default function ProjectHighlihtsContainer({
       signature,
       timestamp,
     });
-
     const req = await fetch(process.env.NEXT_PUBLIC_CLOUDINARY_URL as string, {
       method: "POST",
       body: formData,
