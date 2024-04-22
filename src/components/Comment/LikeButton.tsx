@@ -1,24 +1,39 @@
 "use client";
 
-import createLike from "@/actions/likes";
-import { HeartIcon } from "@radix-ui/react-icons";
+import { createLike, deleteLike } from "@/actions/likes";
+import { HeartIcon, HeartFilledIcon } from "@radix-ui/react-icons";
 
 interface Props {
   userId: number;
   commentId: number;
+  liked: boolean;
+  like_id: number | null;
 }
 
-export default function LikeButton({ userId, commentId }: Props) {
+export default function LikeButton({
+  userId,
+  commentId,
+  liked,
+  like_id,
+}: Props) {
   return (
     <button
-      className="group border-red-600"
       type="button"
       onClick={async () => {
+        if (liked && like_id) {
+          await deleteLike(like_id);
+          return;
+        }
         await createLike(commentId, userId);
       }}
     >
-      <HeartIcon className="block size-4 text-gray-500 stroke-2 group-hover:fill-red-500" />
-      <span className="sr-only">Like comment</span>
+      {liked ? (
+        <HeartFilledIcon className="block size-4 stroke-2 text-red-400" />
+      ) : (
+        <HeartIcon className="block size-4 text-gray-500 stroke-2" />
+      )}
+
+      <span className="sr-only">{liked ? "Unlike" : "Like"} comment</span>
     </button>
   );
 }

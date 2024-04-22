@@ -77,9 +77,7 @@ export async function findProject({
   if (!project) {
     return false;
   }
-  if (project.user_id !== userId) {
-    return false;
-  }
+
   const mediaQuery = db({
     query: "SELECT id, src FROM Media WHERE project_id=?",
     values: [projectId],
@@ -90,8 +88,27 @@ export async function findProject({
     values: [projectId],
   });
   const commentsQuery = db({
-    query:
-      "SELECT * FROM Comments WHERE project_id=? ORDER BY created_at DESC;",
+    query: `SELECT
+    c.id AS comment_id,
+    c.content AS comment_content,
+    u.username AS commenter_username,
+    c.created_at AS comment_date,
+    l.id AS like_id,
+    COUNT(l.id) AS num_likes,
+     IF(l.user_id = u.id, TRUE, FALSE) AS user_liked
+FROM
+    Comments c
+JOIN
+    User u ON c.user_id = u.id
+LEFT JOIN
+    Likes l ON c.id = l.comment_id
+WHERE 
+	c.project_id = ?
+GROUP BY
+    c.id, c.created_at, c.content, u.username, l.user_id, l.id
+ORDER BY c.created_at DESC;
+  
+`,
     values: [projectId],
   });
 
@@ -100,20 +117,9 @@ export async function findProject({
     highlightsQuery,
     commentsQuery,
   ]);
-  const commentsWithUserInfo = await Promise.all(
-    comments.map(async (comment) => {
-      const [user] = await db({
-        query: "SELECT username, email FROM User WHERE id=?",
-        values: [comment.user_id],
-      });
-      const { username, email } = user;
-      return { ...comment, username, email };
-    })
-  );
-
   project.media = media;
   project.highlights = highlights;
-  project.comments = commentsWithUserInfo;
+  project.comments = comments;
   return project;
 }
 

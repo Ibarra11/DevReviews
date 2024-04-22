@@ -2,10 +2,10 @@ import moment from "moment";
 
 interface Props {
   username: string;
-  created_at: Date;
+  date: Date;
 }
-export default function CommentHeader({ username, created_at }: Props) {
-  const formattedTime = moment(created_at).fromNow();
+export default function CommentHeader({ username, date }: Props) {
+  const formattedTime = moment(date).fromNow();
   return (
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-2">

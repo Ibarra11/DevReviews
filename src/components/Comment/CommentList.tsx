@@ -7,6 +7,7 @@ export default function CommentList({
   comments: any;
   userId: number;
 }) {
+  console.log(comments);
   return (
     <ul className="flex-1 space-y-4">
       {comments.map((comment) => (

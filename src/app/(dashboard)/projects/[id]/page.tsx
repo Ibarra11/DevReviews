@@ -21,7 +21,6 @@ export default async function ProjectSettings({
     projectId: +params.id,
     userId: user.userId,
   });
-
   if (!project) {
     // @todo not found not redirect
     redirect("/");

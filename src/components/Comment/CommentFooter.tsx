@@ -4,11 +4,23 @@ interface Props {
   commentId: number;
   likes: number;
   liked: boolean;
+  like_id: number | null;
 }
-export default function CommentFooter({ likes = 5, userId, commentId }: Props) {
+export default function CommentFooter({
+  likes,
+  liked,
+  userId,
+  commentId,
+  like_id,
+}: Props) {
   return (
     <div className="flex items-center gap-2">
-      <LikeButton userId={userId} commentId={commentId} />
+      <LikeButton
+        like_id={like_id}
+        liked={liked}
+        userId={userId}
+        commentId={commentId}
+      />
       <div className="flex gap-1 items-center text-gray-600 font-medium">
         <span className="inline-block -translate-y-[1px] text-sm align-to leading-3">
           {likes}
